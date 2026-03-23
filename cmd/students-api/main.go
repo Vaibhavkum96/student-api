@@ -13,6 +13,7 @@ import (
 
 	"github.com/Vaibhavkum96/student-api-go/internal/config"
 	"github.com/Vaibhavkum96/student-api-go/internal/http/handlers/student"
+	"github.com/Vaibhavkum96/student-api-go/internal/sqlite"
 )
 
 func main() {
@@ -21,6 +22,13 @@ func main() {
 	// load config
 	cfg := config.MustLoad()
 	// database setup
+	_, dbErr := sqlite.New(cfg)
+
+	if dbErr != nil {
+		log.Fatal(dbErr)
+	}
+
+	slog.Info("storage intialized")
 	// setup router
 	router := http.NewServeMux()
 
