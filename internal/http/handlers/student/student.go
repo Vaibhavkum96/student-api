@@ -9,6 +9,7 @@ import (
 
 	"github.com/Vaibhavkum96/student-api-go/internal/types"
 	"github.com/Vaibhavkum96/student-api-go/internal/utils/response"
+	"github.com/go-playground/validator/v10"
 )
 
 func New() http.HandlerFunc {
@@ -30,9 +31,15 @@ func New() http.HandlerFunc {
 		}
 
 		slog.Info("Creating A Student!")
-		w.Write([]byte("Welcome To Students Api!"))
+		//w.Write([]byte("Welcome To Students Api!"))
 
 		//Request Validation
+		if err := validator.New().Struct(student); err != nil {
+			//TypeCasting Validations
+			validateErrs := err.(validator.ValidationErrors)
+			response.WriteJson(w, http.StatusBadRequest, response.ValidationErrors(validateErrs))
+			return
+		}
 
 		response.WriteJson(w, http.StatusCreated, map[string]string{"success": "Ok"})
 	}
