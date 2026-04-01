@@ -15,7 +15,6 @@ type Sqlite struct {
 
 func New(cfg *config.Config) (*Sqlite, error) {
 	db, err := sql.Open("sqlite3", cfg.StoragePath)
-
 	if err != nil {
 		return nil, err
 	}
@@ -25,7 +24,6 @@ func New(cfg *config.Config) (*Sqlite, error) {
 	name TEXT,
 	email TEXT,
 	age INTEGER)`)
-
 	if err != nil {
 		return nil, err
 	}
@@ -33,7 +31,6 @@ func New(cfg *config.Config) (*Sqlite, error) {
 	return &Sqlite{
 		Db: db,
 	}, nil
-
 }
 
 func (s *Sqlite) CreateStudent(name string, email string, age int) (int64, error) {
@@ -41,16 +38,14 @@ func (s *Sqlite) CreateStudent(name string, email string, age int) (int64, error
 	if err != nil {
 		return 0, err
 	}
-	//Close
+	// Close
 	defer stmt.Close()
 	result, err := stmt.Exec(name, email, age)
-
 	if err != nil {
 		return 0, err
 	}
 
 	lastId, err := result.LastInsertId()
-
 	if err != nil {
 		return 0, err
 	}
@@ -59,7 +54,6 @@ func (s *Sqlite) CreateStudent(name string, email string, age int) (int64, error
 
 func (s *Sqlite) GetStudentById(id int64) (types.Student, error) {
 	stmt, err := s.Db.Prepare("SELECT id,name, email, age FROM students WHERE id = ? LIMIT 1")
-
 	if err != nil {
 		return types.Student{}, err
 	}
@@ -69,7 +63,6 @@ func (s *Sqlite) GetStudentById(id int64) (types.Student, error) {
 	var student types.Student
 
 	err = stmt.QueryRow(id).Scan(&student.Id, &student.Name, &student.Email, &student.Age)
-
 	if err != nil {
 
 		if err == sql.ErrNoRows {

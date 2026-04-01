@@ -1,0 +1,45 @@
+# golangci-lint v1 configuration
+
+linters:
+  enable:
+    - errcheck        # Check for unchecked errors
+    - govet           # Reports suspicious constructs
+    - staticcheck     # Comprehensive static analysis
+    - unused          # Check for unused code
+    - gosimple        # Simplify code suggestions
+    - ineffassign     # Detect ineffectual assignments
+    - typecheck       # Type-checking
+    - gofumpt         # Enforce gofumpt formatting
+    - goconst         # Find repeated strings that could be constants
+    - gocyclo         # Cyclomatic complexity checker
+    - misspell        # Find commonly misspelled English words
+    - prealloc        # Suggest preallocations
+    - unconvert       # Remove unnecessary type conversions
+    - unparam         # Report unused function parameters
+    - whitespace      # Detect leading/trailing whitespace
+
+# Linter-specific settings
+linters-settings:
+  gofumpt:
+    extra-rules: true
+  gocyclo:
+    min-complexity: 15
+  goconst:
+    min-len: 3
+    min-occurrences: 3
+
+# Issues configuration
+issues:
+  max-issues-per-linter: 50
+  max-same-issues: 5
+
+  exclude-rules:
+    # Exclude some linters from running on test files
+    - path: _test\.go
+      linters:
+        - gocyclo
+        - goconst
+        - unparam
+
+run:
+  timeout: 5m

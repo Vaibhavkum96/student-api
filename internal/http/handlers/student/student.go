@@ -17,10 +17,9 @@ import (
 
 func New(storage storage.Storage) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
 		var student types.Student
 		err := json.NewDecoder(r.Body).Decode(&student)
-		//Empty Body Error
+		// Empty Body Error
 		if errors.Is(err, io.EOF) {
 			response.WriteJson(w, http.StatusBadRequest, response.GeneralError(err))
 			return
@@ -34,11 +33,11 @@ func New(storage storage.Storage) http.HandlerFunc {
 		}
 
 		slog.Info("Creating A Student!")
-		//w.Write([]byte("Welcome To Students Api!"))
+		// w.Write([]byte("Welcome To Students Api!"))
 
-		//Request Validation
+		// Request Validation
 		if err := validator.New().Struct(student); err != nil {
-			//TypeCasting Validations
+			// TypeCasting Validations
 			validateErrs := err.(validator.ValidationErrors)
 			response.WriteJson(w, http.StatusBadRequest, response.ValidationErrors(validateErrs))
 			return
@@ -63,14 +62,12 @@ func GetById(storage storage.Storage) http.HandlerFunc {
 		slog.Info("getting a student", slog.String("id", id))
 
 		intId, err := strconv.ParseInt(id, 10, 64)
-
 		if err != nil {
 			response.WriteJson(w, http.StatusBadRequest, response.GeneralError(err))
 			return
 		}
 
 		student, err := storage.GetStudentById(intId)
-
 		if err != nil {
 			slog.Error("error getting user", slog.String("id", id))
 			response.WriteJson(w, http.StatusInternalServerError, response.GeneralError(err))

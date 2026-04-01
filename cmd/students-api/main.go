@@ -48,13 +48,12 @@ func main() {
 
 	go func() {
 		err := server.ListenAndServe()
-
 		if err != nil {
 			log.Fatalf("Failed To Start Server!")
 		}
 	}()
 
-	//Need to Understand This completely
+	// Need to Understand This completely
 	<-done
 
 	slog.Info("Shutting Down The Server")
@@ -63,11 +62,9 @@ func main() {
 	defer cancel()
 
 	err := server.Shutdown(ctx)
-
 	if err != nil {
 		slog.Error("failed to shutdown server", slog.String("error", err.Error()))
 	}
 
 	slog.Info("server shutdown successfully.")
-
 }

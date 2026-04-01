@@ -12,8 +12,7 @@ type HTTPServer struct {
 	Addr string `yaml:"address" env-required: "true"`
 }
 
-//env-default:"production"
-
+// env-default:"production"
 type Config struct {
 	Env         string `yaml:"env" env:"ENV" env-required:"true"`
 	StoragePath string `yaml:"storage_path" env-required:"true"`
@@ -42,12 +41,10 @@ func MustLoad() *Config {
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		log.Fatalf("Config File Does Not Exist: %s", configPath)
 	}
-
-	//Serialize the Config
+	// Serialize the Config
 	var cfg Config
 
 	err := cleanenv.ReadConfig(configPath, &cfg)
-
 	if err != nil {
 		log.Fatalf("can not read config file: %s", err.Error())
 	}

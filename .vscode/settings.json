@@ -1,3 +1,41 @@
 {
-  "editor.formatOnSave": true
+  // Format on save - automatically formats Go files when you save
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "golang.go",
+
+  // Go-specific settings
+  "[go]": {
+    "editor.defaultFormatter": "golang.go",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.tabSize": 4,
+    "editor.insertSpaces": false
+  },
+
+  // Use gofumpt as the formatter (stricter than gofmt)
+  "go.formatTool": "gofumpt",
+  "go.useLanguageServer": true,
+
+  // gopls (Go language server) settings
+  "gopls": {
+    "formatting.gofumpt": true,
+    "ui.semanticTokens": true,
+    "ui.diagnostic.analyses": {
+      "unusedparams": true,
+      "shadow": true,
+      "fieldalignment": true,
+      "nilness": true,
+      "unusedwrite": true
+    }
+  },
+
+  // Lint settings - use golangci-lint
+  "go.lintTool": "golangci-lint",
+  "go.lintFlags": ["--fast"],
+  "go.lintOnSave": "package",
+
+  // Vet on save
+  "go.vetOnSave": "package"
 }
